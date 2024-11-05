@@ -4,6 +4,8 @@ const morgan = require('morgan');                                  // logging mi
 const { check, validationResult, oneOf } = require('express-validator'); // validation middleware
 const cors = require('cors');
 
+const userDao = require('./dao-users'); // module for accessing the user table in the DB
+
 /*** init express and set-up the middlewares ***/
 const app = express();
 app.use(morgan('dev'));
@@ -72,6 +74,66 @@ const isLoggedIn = (req, res, next) => {
 
 
 /*** Utility Functions ***/
+
+
+/*** Users APIs ***/
+// POST /api/sessions 
+// This route is used for performing login.
+app.post('/api/sessions', function(req, res, next) {
+  passport.authenticate('local', (err, user, info) => { 
+    if (err)
+      return next(err);
+      if (!user) {
+        // display wrong login messages
+        return res.status(401).json({ error: info});
+      }
+      // success, perform the login and extablish a login session
+      req.login(user, (err) => {
+        if (err)
+          return next(err);
+        
+        // req.user contains the authenticated user, we send all the user info back
+        // this is coming from userDao.getUser() in LocalStratecy Verify Fn
+        return res.json(req.user);
+      });
+  })(req, res, next);
+});
+
+// GET /api/sessions/current
+// This route checks whether the user is logged in or not.
+app.get('/api/sessions/current', (req, res) => {
+  if(req.isAuthenticated()) {
+    res.status(200).json(req.user);}
+  else
+    res.status(401).json({error: 'Not authenticated'});
+});
+
+// DELETE /api/session/current
+// This route is used for loggin out the current user.
+app.delete('/api/sessions/current', (req, res) => {
+  req.logout(() => {
+    res.status(200).json({});
+  });
+});
+
+// POST /api/create-user
+app.post('/api/create-user', async (req, res) => {
+  const { credentials } = req.body;
+
+  console.log("[index.js]>", credentials);
+
+  try {
+    const newUser = await userDao.createUser(credentials);
+    if (newUser) {
+      res.status(201).json({ message: 'User created successfully', user: newUser });
+    } else {
+      res.status(409).json({ error: 'User already exists' });
+    }
+  } catch (err) {
+    console.error("Error in user creation:", err);
+    res.status(500).json({ error: 'Database error while creating user' });
+  }
+});
 
 // Activating the server
 const PORT = 3001;
