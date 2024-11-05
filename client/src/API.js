@@ -63,19 +63,15 @@ const logOut = async() => {
 }
 
 const createUser = async (credentials) => {
-  const response = await fetch(SERVER_URL + 'create-user', {
+  // Attendi la risoluzione della Promise ritornata da getJson
+  return await getJson(fetch(SERVER_URL + 'create-user', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({credentials}), // Ensure keys match backend
-  });
-
-  if (!response.ok) {
-    throw new Error(`HTTP error! status: ${response.status}`);
-  }
-
-  return await response.json();
+    credentials: 'include',  // questo parametro specifica che il cookie di autenticazione deve essere incluso
+    body: JSON.stringify({ credentials }), // Assicurati che le chiavi corrispondano al backend
+  }));
 };
 
 

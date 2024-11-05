@@ -78,10 +78,10 @@ function AppWithRouter(props) {
 
   const handleRegister = async (credentials) => {
     try {
-      const user = await API.createUser(credentials);
-      //todo: automatic login after registration
-      // setUser(user);
-      // setLoggedIn(true);
+      await API.createUser(credentials);
+      const user = await API.logIn(credentials);
+      setUser(user);
+      setLoggedIn(true);
     } catch (err) {
       throw err;
     }
