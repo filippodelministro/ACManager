@@ -4,7 +4,7 @@ import { Outlet, Link, useParams, Navigate, useLocation } from 'react-router-dom
 
 import { Navigation } from './Navigation';
 import { useEffect } from 'react';
-import { LoginForm, RegisterForm } from './Auth';
+import { LoginForm } from './Auth';
 
 
 function NotFoundLayout(props) {

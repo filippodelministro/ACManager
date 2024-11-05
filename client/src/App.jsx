@@ -90,20 +90,37 @@ function AppWithRouter(props) {
   const handleLogout = async () => {
     await API.logOut();
     setLoggedIn(false);
-    // clean up everything
     setUser(null);
   };
 
 
   return (
-      <Container fluid>
+    <Container fluid>
         <Routes>
-          <Route path="/" element={loggedIn?<GenericLayout loggedIn={loggedIn} user={user} logout={handleLogout} /> : <Navigate replace to='/login' />}></Route>
-          <Route path="*" element={<NotFoundLayout />}/>
-          <Route path="/login" element={!loggedIn ? <LoginLayout login={handleLogin}/>:<Navigate replace to='/'/>}/>
-          <Route path="/register" element={<RegisterLayout register={handleRegister} />} />
+          {/* Rotta principale che mostra il layout generico se l'utente è loggato, altrimenti va a /login */}
+          <Route
+            path="/"
+            element={loggedIn ? (
+              <GenericLayout loggedIn={loggedIn} user={user} logout={handleLogout} />
+            ) : (
+              <Navigate replace to="/login" />
+            )}
+          />
+          {/* Rotta per il login */}
+          {/*todo: */}
+          <Route
+            path="/login"
+            element={
+              !loggedIn ? (
+                <LoginLayout login={handleLogin} register={handleRegister} />
+              ) : (
+                <Navigate replace to="/" />
+              )
+            }
+          />
+          <Route path="*" element={<NotFoundLayout />} />
         </Routes>
-      </Container>
+    </Container>
   );
 }
 
