@@ -35,6 +35,8 @@ function LoginForm(props) {
     event.preventDefault();
     const credentials = { username, password };
 
+    console.log("Auth.jsx: handleRegisterSubmit> ", credentials);
+
     if (!username) {
       setErrorMessage('Username cannot be empty!');
     } else if (!password) {
@@ -109,12 +111,12 @@ function LoginForm(props) {
               <Form.Group className="mb-3">
                 <Form.Label>
                   <FaUser className="me-2" />
-                  Email
+                  Username
                 </Form.Label>
                 <Form.Control
                   type="string"
                   value={username}
-                  placeholder="Enter your email"
+                  placeholder="Enter your username"
                   onChange={(ev) => setUsername(ev.target.value)}
                 />
               </Form.Group>
@@ -157,4 +159,10 @@ function LoginForm(props) {
   );
 }
 
-export {LoginForm};
+function LogoutButton(props) {
+  return (
+    <Button variant="outline-light" onClick={props.logout}>Logout</Button>
+  )
+}
+
+export {LoginForm, LogoutButton};

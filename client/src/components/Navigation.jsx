@@ -2,7 +2,7 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 
 import { Navbar, Nav, Form } from 'react-bootstrap';
 
-import { } from './Auth';
+import { LogoutButton } from './Auth';
 
 const Navigation = (props) => {
     return (
