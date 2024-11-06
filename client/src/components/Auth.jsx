@@ -30,11 +30,18 @@ function LoginForm(props) {
   const handleRegisterSubmit = (event) => {
     event.preventDefault();
     const credentials = { username, password };
-
+    const usernameRegex = /^(?=.*[A-Za-z])[A-Za-z0-9]{3,}$/;
+    const passwordRegex = /^.{8,}$/;
+  
     if (!username) {
       setErrorMessage('Username cannot be empty!');
-    } else if (!password) {
+    } else if (!usernameRegex.test(username)) {
+      setErrorMessage('Username must be at least 3 characters long and contain at least one letter');
+    }   
+    else if (!password) {
       setErrorMessage('Password cannot be empty');
+    } else if (!passwordRegex.test(password)) {
+      setErrorMessage('Password must be at least 8 characters long');
     } else if (password !== confirmPassword) {
       setErrorMessage('Passwords do not match');
     } else {
