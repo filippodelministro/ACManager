@@ -52,19 +52,8 @@ function GenericLayout(props) {
       <Row><Col>
         {props.message? <Alert className='my-1' onClose={() => props.setMessage('')} variant='danger' dismissible>
           {props.message}</Alert> : null}
-        {/* Alternative, with autohide
-          <Toast show={props.message !== ''} onClose={() => props.setMessage('')} delay={4000} autohide>
-            <Toast.Body>{props.message}</Toast.Body>
-          </Toast>
-        */}
       </Col></Row>
 
-      <Row>
-        <Col xs={9}>
-          <Outlet />
-
-        </Col>
-      </Row>
     </>
   );
 }

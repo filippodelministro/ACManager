@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Form, Button, Alert, Col, Container, Card } from 'react-bootstrap';
-import { FaUser, FaLock } from 'react-icons/fa';
+import { FaUser, FaLock} from 'react-icons/fa';
+import { FiLogOut } from "react-icons/fi";
 
 function LoginForm(props) {
   const [username, setUsername] = useState('');
@@ -30,8 +31,12 @@ function LoginForm(props) {
   const handleRegisterSubmit = (event) => {
     event.preventDefault();
     const credentials = { username, password };
-    const usernameRegex = /^(?=.*[A-Za-z])[A-Za-z0-9]{3,}$/;
-    const passwordRegex = /^.{8,}$/;
+
+    //todo: change this value for proper validation
+    // const usernameRegex = /^(?=.*[A-Za-z])[A-Za-z0-9]{3,}$/;
+    // const passwordRegex = /^.{8,}$/;
+    const usernameRegex = /^.{1,}$/;
+    const passwordRegex = /^.{1,}$/;
   
     if (!username) {
       setErrorMessage('Username cannot be empty!');
@@ -163,8 +168,10 @@ function LoginForm(props) {
 
 function LogoutButton(props) {
   return (
-    <Button variant="outline-light" onClick={props.logout}>Logout</Button>
-  )
+    <Button className='iconButton' onClick={props.logout}>
+      <FiLogOut />
+    </Button>
+  );
 }
 
 export {LoginForm, LogoutButton};
