@@ -50,12 +50,11 @@ exports.getUser = (name, password) => {
   });
 };
 
+// Check for the availability of the username and then create a new user
 exports.createUser = (credentials) => {
   return new Promise((resolve, reject) => {
     const sqlCheck = 'SELECT * FROM users WHERE name=?';
     const sqlInsert = 'INSERT INTO users (name, hash, salt) VALUES (?, ?, ?)';
-
-    console.log("[daousers.js]> Check if user exists:", credentials);
 
     const username = credentials.username;
     const password = credentials.password;
@@ -69,11 +68,11 @@ exports.createUser = (credentials) => {
         return resolve(false); // L'utente esiste già
       }
 
-      // Genera un salt casuale
+      // Generate random salt
       const salt = crypto.randomBytes(16).toString('hex');
       
-      // Crea un hash della password utilizzando scrypt con il salt
-      crypto.scrypt(password, salt, 32, (err, derivedKey) => { // Usa una lunghezza chiave di 32 per consistenza
+      // Generate hash of the password using the salt
+      crypto.scrypt(password, salt, 32, (err, derivedKey) => { 
         if (err) {
           console.error("Error generating password hash:", err);
           return reject(err);
@@ -81,7 +80,7 @@ exports.createUser = (credentials) => {
 
         const hash = derivedKey.toString('hex');
 
-        // Inserisce il nuovo utente nel database con name, hash e salt
+        // Insert new user by registering the username, hash and salt (NO password is saved)
         db.run(sqlInsert, [username, hash, salt], function(err) {
           if (err) {
             console.error("Error inserting new user:", err);
@@ -89,7 +88,7 @@ exports.createUser = (credentials) => {
           }
 
           console.log("New user created with ID:", this.lastID);
-          return resolve(true); // Utente creato con successo
+          return resolve(true);
         });
       });
     });

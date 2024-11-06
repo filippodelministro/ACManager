@@ -53,6 +53,7 @@ passport.deserializeUser(function (user, callback) { // this user is id + email 
 /** Creating the session */
 const session = require('express-session');
 
+//todo
 app.use(session({
   secret: "shhhhh... it's a secret! - change it for the exam!",
   resave: false,
@@ -73,10 +74,10 @@ const isLoggedIn = (req, res, next) => {
 }
 
 
-/*** Utility Functions ***/
+// ================== Utility Functions ==================
 
 
-/*** Users APIs ***/
+// ================== Users APIs ==================
 // POST /api/sessions 
 // This route is used for performing login.
 app.post('/api/sessions', function(req, res, next) {
@@ -117,10 +118,9 @@ app.delete('/api/sessions/current', (req, res) => {
 });
 
 // POST /api/create-user
+// This route is used to create a new user
 app.post('/api/create-user', async (req, res) => {
   const { credentials } = req.body;
-
-  console.log("[index.js]>", credentials);
 
   try {
     const newUser = await userDao.createUser(credentials);

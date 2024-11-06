@@ -10,9 +10,6 @@ function LoginForm(props) {
   const [showRegister, setShowRegister] = useState(false); // Stato per gestire la visualizzazione del form di registrazione o login
 
 
-  //todo: handle login and registration with showRegister
-
-  // Funzione per il submit del form di login
   const handleLoginSubmit = (event) => {
     event.preventDefault();
     const credentials = { username, password };
@@ -30,12 +27,9 @@ function LoginForm(props) {
     }
   };
 
-  // Funzione per il submit del form di registrazione
   const handleRegisterSubmit = (event) => {
     event.preventDefault();
     const credentials = { username, password };
-
-    console.log("Auth.jsx: handleRegisterSubmit> ", credentials);
 
     if (!username) {
       setErrorMessage('Username cannot be empty!');
@@ -45,9 +39,6 @@ function LoginForm(props) {
       setErrorMessage('Passwords do not match');
     } else {
       props.register(credentials)
-        .then(() => {
-          setShowRegister(false); // Torna al form di login dopo la registrazione
-        })
         .catch((err) => {
           setErrorMessage(err.error);
         });
@@ -57,6 +48,8 @@ function LoginForm(props) {
   return (
     <Container className="loginContainer d-flex align-items-center justify-content-center vh-100">
       <Col xs={12} md={6} lg={4}>
+      
+      {/* -------- login form -------- */}
         {!showRegister ? (
           <Card className="shadow-lg p-4 rounded">
             <h2 className="loginTitle text-center">Login</h2>
@@ -99,7 +92,9 @@ function LoginForm(props) {
               <Button variant="link" onClick={() => setShowRegister(true)}>Create one</Button>
             </div>
           </Card>
-        ) : (
+        ) :
+        // /* -------- registration form -------- 
+        (
           <Card className="shadow-lg p-4 rounded">
             <h2 className="text-center mb-4">Register</h2>
             <Form onSubmit={handleRegisterSubmit}>

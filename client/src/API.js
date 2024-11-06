@@ -2,9 +2,7 @@
 const SERVER_URL = 'http://localhost:3001/api/';
 
 
-/**
- * A utility function for parsing the HTTP response.
- */
+//A utility function for parsing the HTTP response.
 function getJson(httpResponsePromise) {
   // server API always return JSON, in case of error the format is the following { error: <message> } 
   return new Promise((resolve, reject) => {
@@ -32,7 +30,7 @@ function getJson(httpResponsePromise) {
   });
 }
 
-/*** Authentication functions ***/
+// ================== Authentication functions ==================
 
 const logIn = async (credentials) => {
   return getJson(fetch(SERVER_URL + 'sessions', {
@@ -63,14 +61,13 @@ const logOut = async() => {
 }
 
 const createUser = async (credentials) => {
-  // Attendi la risoluzione della Promise ritornata da getJson
   return await getJson(fetch(SERVER_URL + 'create-user', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    credentials: 'include',  // questo parametro specifica che il cookie di autenticazione deve essere incluso
-    body: JSON.stringify({ credentials }), // Assicurati che le chiavi corrispondano al backend
+    credentials: 'include', 
+    body: JSON.stringify({ credentials }),
   }));
 };
 

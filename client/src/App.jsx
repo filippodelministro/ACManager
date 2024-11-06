@@ -7,7 +7,7 @@ import { React, useState, useEffect } from 'react';
 import { Container } from 'react-bootstrap';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 
-import { GenericLayout, NotFoundLayout, LoginLayout, RegisterLayout } from './components/Layout';
+import { GenericLayout, NotFoundLayout, LoginLayout } from './components/Layout';
 import API from './API.js';
 
 function App() {
@@ -20,12 +20,11 @@ function App() {
 
 function AppWithRouter(props) {  
 
-  // This state keeps track if the user is currently logged-in.
+  // This states keeps track if the user is currently logged-in.
   const [loggedIn, setLoggedIn] = useState(false);
-  // This state contains the user's info.
   const [user, setUser] = useState(null);
 
-  //todo
+  //todo: understand if useful
   const [dirty, setDirty] = useState(true);
 
   // If an error occurs, the error message will be shown in a toast.
@@ -68,7 +67,6 @@ function AppWithRouter(props) {
     try {
       const user = await API.logIn(credentials);
       setUser(user);
-      console.log("user:",user)
       setLoggedIn(true);
     } catch (err) {
       // error is handled and visualized in the login form, do not manage error, throw it
@@ -97,7 +95,6 @@ function AppWithRouter(props) {
   return (
     <Container fluid>
         <Routes>
-          {/* Rotta principale che mostra il layout generico se l'utente è loggato, altrimenti va a /login */}
           <Route
             path="/"
             element={loggedIn ? (
@@ -106,11 +103,10 @@ function AppWithRouter(props) {
               <Navigate replace to="/login" />
             )}
           />
-          {/* Rotta per il login */}
-          {/*todo: */}
           <Route
             path="/login"
             element={
+              // login and registration in the same page and managed in Layout.jsx
               !loggedIn ? (
                 <LoginLayout login={handleLogin} register={handleRegister} />
               ) : (

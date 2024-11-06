@@ -18,54 +18,55 @@ function NotFoundLayout(props) {
     );
   }
 
-  function LoginLayout(props) {
-    return (
+function LoginLayout(props) {
+  return (
+    <Row>
+      <Col>
+        {/* both props are passed to the LoginForm to handle btoh cases */}
+        <LoginForm login={props.login} register={props.register} />
+      </Col>
+    </Row>
+  );
+}
+
+function RegisterLayout(props) {
+  return (
+    <Row>
+      <Col>
+        <RegisterForm register={props.register} />
+      </Col>
+    </Row>
+  );
+}
+
+function GenericLayout(props) {
+
+  return (
+    <>
       <Row>
         <Col>
-          <LoginForm login={props.login} register={props.register} />
+          <Navigation loggedIn={props.loggedIn} user={props.user} logout={props.logout} />
         </Col>
       </Row>
-    );
-  }
 
-  function RegisterLayout(props) {
-    return (
+      <Row><Col>
+        {props.message? <Alert className='my-1' onClose={() => props.setMessage('')} variant='danger' dismissible>
+          {props.message}</Alert> : null}
+        {/* Alternative, with autohide
+          <Toast show={props.message !== ''} onClose={() => props.setMessage('')} delay={4000} autohide>
+            <Toast.Body>{props.message}</Toast.Body>
+          </Toast>
+        */}
+      </Col></Row>
+
       <Row>
-        <Col>
-          <RegisterForm register={props.register} />
+        <Col xs={9}>
+          <Outlet />
+
         </Col>
       </Row>
-    );
-  }
-
-  function GenericLayout(props) {
+    </>
+  );
+}
   
-    return (
-      <>
-        <Row>
-          <Col>
-            <Navigation loggedIn={props.loggedIn} user={props.user} logout={props.logout} />
-          </Col>
-        </Row>
-
-        <Row><Col>
-          {props.message? <Alert className='my-1' onClose={() => props.setMessage('')} variant='danger' dismissible>
-            {props.message}</Alert> : null}
-          {/* Alternative, with autohide
-            <Toast show={props.message !== ''} onClose={() => props.setMessage('')} delay={4000} autohide>
-              <Toast.Body>{props.message}</Toast.Body>
-            </Toast>
-          */}
-        </Col></Row>
-
-        <Row>
-          <Col xs={9}>
-            <Outlet />
-  
-          </Col>
-        </Row>
-      </>
-    );
-  }
-  
-  export { GenericLayout, NotFoundLayout, LoginLayout, RegisterLayout };
+export { GenericLayout, NotFoundLayout, LoginLayout, RegisterLayout };
